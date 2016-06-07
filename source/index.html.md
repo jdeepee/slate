@@ -356,9 +356,11 @@ curl "http://localhost:5000/loops/create/" -H "JWT-Auth: YOURJWTTOKEN"
 
 > The above request envokes a JSON response like this:
 
+```json
 {
   "message": "Loop successfully created"
 }
+```
 
 This endpoint will allow you to create a custom Loop
 
@@ -380,9 +382,11 @@ curl "http://localhost:5000/loops/LOOPID/confirm/"
 
 > The above request envokes a JSON response like this;
 
+```json
 {
   "message": "User has been accepted into the loop!"
 }
+```
 
 This endpoint allows the owner of a private loop to add users into the Loop.
 

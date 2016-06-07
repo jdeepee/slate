@@ -2,12 +2,9 @@
 title: API Reference
 
 language_tabs:
-  - shell
-  - ruby
-  - python
+  - cURL
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
   - <a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a>
 
 includes:
@@ -18,151 +15,332 @@ search: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome to the documentation for Loops API!
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+This API is a RESTFUL API built in Flask. All body requests/responses will be in JSON. JWT Tokens are used to authenticate users.
 
 This example API documentation page was created with [Slate](https://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
 
 # Authentication
 
-> To authorize, use this code:
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
+> To pass your JWT token when making a request, use the following header:
 
 ```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
+curl "URLYOUWISHTOACCESS"
+  -H "JWT-Auth: test"
 ```
 
-> Make sure to replace `meowmeowmeow` with your API key.
-
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
+Loop uses JWT tokens to authenticate users. You can generate a JWT token using the '/authtoken/' endpoint.
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+You must replace <code>test</code> with your personal API key.
 </aside>
 
-# Kittens
+# User's
 
-## Get All Kittens
+## Sign Up
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
+```shell
+curl "http://localhost:500/users/" -XPOST
+  -H "Content-Type: application/json" 
+  -d {"username": "USERNAMEHERE", "password": "PASSWORDHERE"}
 ```
 
-```python
-import kittn
+> The above request envokes a JSON response like this:
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
+```json
+{
+  "uuid": "YOURUUID"
+}
+```
+
+This endpoint signs a user up.
+
+### HTTP Request
+
+`POST http://localhost:5000/users/`
+
+## Users profile information
+
+```shell
+curl "http://localhost:5000/users/idofuser/" -XGET
+```
+
+> The above request envokes a JSON response like this:
+
+```json
+{
+  "username": "USERNAME OF USER",
+  "bio": "BIO OF USER",
+  "name": "NAME OF USER",
+  "all posts": "NUMBER OF ALL POSTS (INT)",
+  "active posts": "NUMBER OF ACTIVE POSTS (INT)",
+  "profile_picture": "LINK TO USERS PROFILE PICTURE",
+  "old posts": "NUMBER OF OLD POSTS (INT)",
+  "id": "ID OF USER"
+}
+```
+
+This endpoint returns a users profile information.
+
+### HTTP Request
+
+`GET http://localhost:5000/users/idofuser/`
+
+##Users Posts
+
+```shell
+curl "http://localhost:5000/users/idofuser/posts/?filter=all" -XGET
+```
+
+> the above request envokes a JSON response like this:
+
+```json
+{
+  "active": [
+    {
+      "votes": "NUMBER OF VOTES (INT)",
+      "user_id": "USERID",
+      "area": "AREA ID",
+      "media": "LINK TO POSTS MEDIA",
+      "y": "Y AXIS OF TEXT ON SCREEN (INT)",
+      "lifetime": "LIFETIME OF POST (INT)",
+      "message": "MESSAGE OF POST",
+      "id": "ID OF POST",
+      "time_uploaded": "TIME OF POST UPLOAD"
+    }
+  ],
+  "old": [
+    {
+      "votes": "NUMBER OF VOTES (INT)",
+      "user_id": "USERID",
+      "area": "AREA ID",
+      "media": "LINK TO POSTS MEDIA",
+      "y": "Y AXIS OF TEXT ON SCREEN (INT)",
+      "lifetime": "LIFETIME OF POST (INT)",
+      "message": "MESSAGE OF POST",
+      "id": "ID OF POST",
+      "time_uploaded": "TIME OF POST UPLOAD"
+    },
+  ]
+}
+
 ```
 
 ```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
+curl "http://localhost:5000/users/idofuser/posts/?filter=old" -XGET
 ```
 
-> The above command returns JSON structured like this:
+> the above request envokes a JSON response like this:
 
 ```json
 [
   {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
+	"votes": "NUMBER OF VOTES (INT)",
+	"user_id": "USERID",
+	"area": "AREA ID",
+	"media": "LINK TO POSTS MEDIA",
+	"y": "Y AXIS OF TEXT ON SCREEN (INT)",
+	"lifetime": "LIFETIME OF POST (INT)",
+	"message": "MESSAGE OF POST",
+	"id": "ID OF POST",
+	"time_uploaded": "TIME OF POST UPLOAD"
   }
 ]
 ```
 
-This endpoint retrieves all kittens.
+```shell
+curl "http://localhost:5000/users/idofuser/posts/?filter=active" -XGET
+```
 
-### HTTP Request
+> the above request envokes a JSON response like this:
 
-`GET http://example.com/api/kittens`
+```json
+[
+  {
+	"votes": "NUMBER OF VOTES (INT)",
+	"user_id": "USERID",
+	"area": "AREA ID",
+	"media": "LINK TO POSTS MEDIA",
+	"y": "Y AXIS OF TEXT ON SCREEN (INT)",
+	"lifetime": "LIFETIME OF POST (INT)",
+	"message": "MESSAGE OF POST",
+	"id": "ID OF POST",
+	"time_uploaded": "TIME OF POST UPLOAD"
+  }
+]
+```
+
+This endpoint returns all posts of a specific user
+
+### HTTP Request 
+
+`GET http://localhost:5000/users/idofuser/posts/`
 
 ### Query Parameters
 
-Parameter | Default | Description
+Parameter | Values | Description
 --------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+filter | active | Returns all active posts
+filter | old | Returns all active posts
+filter | all | Returns all posts old and active
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
+## Username Check
 
 ```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
+curl "http://localhost:5000/usernamecheck/?username=USERNAMETOCHECK" -XGET
 ```
 
-> The above command returns JSON structured like this:
+> The above request envokes a JSON response like this:
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+  "isAvailable": true
 }
 ```
 
-This endpoint retrieves a specific kitten.
+This endpoint returns True/False if a username is in use or not.
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+### HTTP Request 
+
+`GET http://localhost:5000/usernamecheck/`
+
+### Query Parameters
+
+Parameter | Values |
+--------- | ------- |
+username | username you want to check |
+
+## User Search
+
+```shell
+curl "http://localhost:500/users/search/?query=USERNAMEYOUWANTTOSEARCH"
+```
+
+> The above request envokes a JSON response like this:
+
+```json
+[
+  {
+    "username": "USERNAME OF USER",
+    "bio": "BIO OF USER",
+    "profile_picture": "URL TO PROFILE PICTURE OF USER",
+    "id": "ID OF USER",
+    "name": "NAME OF USER"
+  }
+]
+```
+This endpoint will search for users with a given username.
 
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
+`GET http://localhost:5000/users/search/'
 
-### URL Parameters
+### Query Parameters
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
+Parameter | Values |
+--------- | ------- |
+query | username you want to search |
+
+## Updating user information 
+
+```shell
+curl "http://localhost:5000/users/idofuser/" -H "JWT-Auth: YOURJWTTOKEN"
+	-H "Content-Type: application/json" 
+	-d '{"name": "DESIRED NAME CHANGE", "email": "EMAIL YOU WISH TO CHANGE", "bio": "BIO YOU WISH TO CHANGE"}'
+	-XPATCH
+```
+
+> The above request enokes a JSON response like this:
+
+```json
+{
+  "message": "Your profile has been updated"
+}
+```
+
+This endpoint will update a users profile information.
+
+<aside class="warning">You must include all JSON keys in the request. If you do not wish to change a key value be sure to keep it the same as its current value.</aside>
+
+### HTTP Request
+
+`PATCH http://localhost:5000/users/idofuser`
+
+## Updating user information and profile picture
+
+```shell
+curl "http://localhost:5000/users/idofuser/" -H "JWT-Auth: YOURJWTTOKEN"
+	-F 'user_data={"name": "DESIRED NAME CHANGE", "email": "EMAIL YOU WISH TO CHANGE", "bio": "BIO YOU WISH TO CHANGE"}'
+	-F 'file=@filepath'
+	-XPATCH
+```
+
+> The above request envokes a JSON response like this:
+
+```json
+{
+  "message": "Your profile has been updated"
+}
+```
+
+This endpoint will update a users profile information. It can also update their profile picture as shown in the curl request.
+
+<aside class="warning">You must include all JSON keys in the request. If you do not wish to change a key value be sure to keep it the same as its current value.</aside>
+
+### HTTP Request
+
+`PATCH http://localhost:5000/users/idofuser`
+
+## Deleting user account
+
+```shell
+curl "http://localhost:5000/users/idofuser/" -H "JWT-Auth: YOURJWTTOKEN"
+	-H "Content-Type: application/json"
+	-d '{"password": "YOUR PASSWORD"}'
+	-XDELETE
+```
+
+> The above request enokes a JSON response like this:
+
+```json
+{
+  "message": "Your profile has been deleted!"
+}
+```
+
+This endpoint well delete a users account 
+
+### HTTP request
+
+`DELETE http://localhost:5000/users/idofuser`
+
+# Loop's
+
+## Saving a Loop
+
+## Getting your saved Loop's
+
+## Nearby Loop's
+
+## Searching for Loop's
+
+## Loop's posts
+
+# Post's
+
+##Trending posts
+
+## Voting on a post
+
+## Deleting a post
+
+## Posting to a Loop
+
+# Custom Loop's
+
+## Creating Custom Loop
+
+## Private custom Loop access
+
 

@@ -341,6 +341,53 @@ This endpoint well delete a users account
 
 ## Creating Custom Loop
 
+```shell
+curl "http://localhost:5000/loops/create/" -H "JWT-Auth: YOURJWTTOKEN"
+	-H "Content-Type: application/json"
+	-d '{
+		    "name": "DESIRED NAME",
+		    "latitude": "DESIRED LAT",
+		    "longitude": "DESIRED LONG",
+		    "location": "true/false",
+		    "private": "true/false"
+		}'
+	-XPOST
+```
+
+> The above request envokes a JSON response like this:
+
+{
+  "message": "Loop successfully created"
+}
+
+This endpoint will allow you to create a custom Loop
+
+<aside class="warning">Location and private must be set to either 'true' or 'false'.</aside>
+
+### HTTP Request
+
+`POST http://localhost:5000/loops/create/`
+
 ## Private custom Loop access
 
+```shell 
+curl "http://localhost:5000/loops/LOOPID/confirm/"
+	-H "JWT-Auth: YOURJWTTOKEN"
+	-H "Content-Type: application/json"
+	-d '{"user": "IDOFUSERYOUWISHTOAUTHENTICATEINTOLOOP"}'
+	-XPOST
+```
 
+> The above request envokes a JSON response like this;
+
+{
+  "message": "User has been accepted into the loop!"
+}
+
+This endpoint allows the owner of a private loop to add users into the Loop.
+
+<aside class="warning">You must be the owner of the Loop to add people to the Loop.</aside>
+
+### HTTP Request
+
+`POST http://localhost:5000/loops/LOOPID/confirm/`

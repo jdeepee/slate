@@ -290,7 +290,7 @@ This endpoint will update a users profile information. It can also update their 
 
 ### HTTP Request
 
-`PATCH http://localhost:5000/users/idofuser`
+`PATCH http://localhost:5000/users/idofuser/`
 
 ## Deleting user account
 
@@ -323,7 +323,114 @@ This endpoint well delete a users account
 
 ## Nearby Loop's
 
+```shell 
+curl "http://localhost:5000/loops/nearby/?lat=YOURLAT&lon=YOURLONG&filter=cityorschool"
+	-XGET
+```
+
+> The above request envokes a JSON response like this:
+
+```json
+[
+  {
+    "state": "CA",
+    "name": "San Francisco",
+    "loopid": 5391959
+  }
+]
+```
+
+```shell 
+curl "http://localhost:5000/loops/nearby/?lat=YOURLAT&lon=YOURLONG&filter=custom"
+	-XGET
+```
+
+> The above request envokes a JSON response like this:
+
+```json
+[
+  {
+    "city": "San Francisco",
+    "name": "Test Custom Open Loop",
+    "country": "US",
+    "creator_id": "d87beafe-b7ad-479c-95a8-66b4ba2e1caf",
+    "private": "false",
+    "state": "CA",
+    "location": "true",
+    "city_short": "SF",
+    "id": "4f3d001c-d9dd-4752-89f9-5ad82d1c8c4e"
+  }
+]
+```
+
+This endpoint will search for nearby Loops with given filters.
+
+
+Parameter | Description
+--------- | -----------
+lat | The latitude of your location
+lon | The longitude of you location
+filter | The type of Loops you wish to return
+
+### HTTP Request
+
+`GET http://localhost:5000/loops/nearby/`
+
 ## Searching for Loop's
+
+```shell 
+curl "http://localhost:5000/loops/search/?lat=YOURLAT&lon=YOURLONG&filter=cityorschool&query=nameoflooptofind"
+	-XGET
+```
+
+> The above request envokes a JSON response like this:
+
+```json
+[
+  {
+    "country": "US",
+    "state": "CA",
+    "name": "San Francisco",
+    "loopid": 5391959
+  }
+]
+```
+
+```shell 
+curl "http://localhost:5000/loops/search/?lat=YOURLAT&lon=YOURLONG&filter=custom&query=nameoflooptofind"
+	-XGET
+```
+
+> The above request envokes a JSON response like this:
+
+```json
+[
+  {
+    "city": "San Francisco",
+    "name": "Test Custom Open Loop",
+    "country": "US",
+    "creator_id": "d87beafe-b7ad-479c-95a8-66b4ba2e1caf",
+    "private": "false",
+    "state": "CA",
+    "location": "true",
+    "city_short": "SF",
+    "id": "4f3d001c-d9dd-4752-89f9-5ad82d1c8c4e"
+  }
+]
+```
+
+This endpoint will search all Loops by name and return them based on distance from you.
+
+Parameter | Description
+--------- | -----------
+lat | The latitude of your location
+lon | The longitude of you location
+filter | The type of Loops you wish to return
+query | Name of Loop you wish to find 
+
+### HTTP Request
+
+`GET http://localhost:5000/loops/search/`
 
 ## Loop's posts
 

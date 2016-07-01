@@ -434,15 +434,91 @@ query | Name of Loop you wish to find
 
 ## Loop's posts
 
+```shell
+curl "http:localhost:5000/loops/id/?page=PAGENUMBER"
+  -H {"JWT-Auth": YOURJWTTOKENHERE}
+  -XGET 
+```
+
+> The above requqest envokes a JSON response like this:
+
+```json
+
+```
+
+This endpoint will return all posts for a give loop ID. 
+
+### HTTP Request
+
+`GET http://localhost:5000/loops/id`
 # Post's
 
 ##Trending posts
 
+```shell
+curl "http://localhost:5000/trending/"
+  -H {"JWT-Auth": YOURJWTTOKENHERE}
+  -XGET
+```
+
+> The above request envokes a JSON response like this:
+
+```json
+```
+
+This endpoint will return most popular posts in order of upvtotes.
+
+### HTTP Request
+
+`GET http://localhost:5000/trending/`
+
 ## Voting on a post
+
+```shell
+curl "http://localhost:5000/post/id/vote/"
+  -H {"Content-Type": "applicaton/json"}
+  -H {"JWT-Auth": JWTTOKENHERE}
+  -d {"vote": ±1}
+  -XPOST
+```
+
+> The above request envokes a JSON response like this:
+
+```json
+{
+  "message": "You have voted on this post!"
+}
+```
+
+Posting to this endpoint will upvote/downvote post with target ID.
+
+### HTTP Request
+
+`POST http://localhost:5000/post/id/vote/`
 
 ## Deleting a post
 
-## Posting to a Loop
+```shell
+curl "htto://localhost:5000/post/id/"
+  -H {"JWT-Auth": YOURJWTTOKENHERE}
+  -XDELETE
+```
+
+> The above request if successful will envoke a JSON response like this.
+
+```json
+{
+  "message": "Your post has been deleted"
+}
+```
+
+Making a DELETE request to this endpoint will delete the post with the target ID providing you are the owner of the post.
+
+<aside class="warning">You must be the owner of the post to delete it.</aside>
+
+### HTTP Request
+
+`DELETE http://localhost:5000/post/id`
 
 # Custom Loop's
 
